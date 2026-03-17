@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About - My Collection</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/>
+        </svg>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Discover</a>
+        <a href="browse.html" class="nav-link">Browse</a>
+        <a href="about.html" class="nav-link active">About</a>
+      </div>
+      <button class="nav-search-btn" aria-label="Search" style="visibility:hidden">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- About Content -->
+  <div class="about-content">
+    <h1>About</h1>
+    <p>This is my personal catalog of everything I own and love. I'm a firm believer that the objects we surround ourselves with matter — they shape our daily experience, productivity, and well-being.</p>
+    <p>Every item here is something I've personally purchased, used extensively, and would recommend without hesitation. No sponsorships, no freebies — just honest picks from someone who cares deeply about quality, design, and craftsmanship.</p>
+    <p>I built this site as a way to organize and share the products that have genuinely improved my life across tech, home, workspace, and everyday carry. If something makes the list, it's because it earned its place.</p>
+    <p>Have questions or want to suggest something? Feel free to reach out on <a href="https://twitter.com" target="_blank" rel="noopener" style="text-decoration:underline">Twitter</a> or via <a href="mailto:hello@example.com" style="text-decoration:underline">email</a>.</p>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/>
+        </svg>
+        <p class="footer-disclaimer">A personal collection of products I use, trust, and see real value in.</p>
+      </div>
+      <div class="footer-columns">
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <a href="index.html">Discover</a>
+          <a href="browse.html">Browse</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <div id="footerCategories"></div>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="https://twitter.com" target="_blank" rel="noopener">Twitter</a>
+          <a href="mailto:hello@example.com">Email</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 My Collection. All rights reserved.</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

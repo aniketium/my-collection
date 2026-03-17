@@ -1,0 +1,141 @@
+{
+  "site": {
+    "name": "My Collection",
+    "tagline": "Everything I own, carefully curated",
+    "description": "A personal catalog of the products I use, trust, and love across home, work, and life."
+  },
+  "categories": [
+    { "id": "tech", "name": "Tech", "icon": "laptop" },
+    { "id": "workspace", "name": "Workspace", "icon": "monitor" },
+    { "id": "home", "name": "Home", "icon": "home" },
+    { "id": "carry", "name": "Carry", "icon": "briefcase" },
+    { "id": "books", "name": "Books", "icon": "book" },
+    { "id": "lifestyle", "name": "Lifestyle", "icon": "heart" },
+    { "id": "coffee", "name": "Coffee", "icon": "coffee" },
+    { "id": "watches", "name": "Watches", "icon": "watch" },
+    { "id": "clothing", "name": "Clothing", "icon": "shirt" },
+    { "id": "travel", "name": "Travel", "icon": "plane" }
+  ],
+  "items": [
+    {
+      "id": 1,
+      "name": "MacBook Pro 16\"",
+      "brand": "Apple",
+      "category": "tech",
+      "price": 2499,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=MacBook+Pro",
+      "url": "https://apple.com/macbook-pro",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "name": "Studio Display",
+      "brand": "Apple",
+      "category": "tech",
+      "price": 1599,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Studio+Display",
+      "url": "https://apple.com/studio-display",
+      "featured": false
+    },
+    {
+      "id": 3,
+      "name": "Aeron Chair",
+      "brand": "Herman Miller",
+      "category": "workspace",
+      "price": 1930,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Aeron+Chair",
+      "url": "https://hermanmiller.com",
+      "featured": true
+    },
+    {
+      "id": 4,
+      "name": "Stagg EKG Electric Kettle",
+      "brand": "Fellow",
+      "category": "coffee",
+      "price": 200,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Stagg+EKG",
+      "url": "https://fellowproducts.com",
+      "featured": false
+    },
+    {
+      "id": 5,
+      "name": "Speedmaster",
+      "brand": "Omega",
+      "category": "watches",
+      "price": 7800,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Speedmaster",
+      "url": "https://omegawatches.com",
+      "featured": true
+    },
+    {
+      "id": 6,
+      "name": "AirPods Max",
+      "brand": "Apple",
+      "category": "tech",
+      "price": 549,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=AirPods+Max",
+      "url": "https://apple.com/airpods-max",
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "Carry-On",
+      "brand": "Away",
+      "category": "travel",
+      "price": 275,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Away+Carry-On",
+      "url": "https://awaytravel.com",
+      "featured": false
+    },
+    {
+      "id": 8,
+      "name": "Standing Desk",
+      "brand": "Uplift",
+      "category": "workspace",
+      "price": 899,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Standing+Desk",
+      "url": "https://upliftdesk.com",
+      "featured": true
+    },
+    {
+      "id": 9,
+      "name": "Dieter Rams: The Complete Works",
+      "brand": "Phaidon",
+      "category": "books",
+      "price": 59,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Dieter+Rams",
+      "url": "https://phaidon.com",
+      "featured": false
+    },
+    {
+      "id": 10,
+      "name": "Togo Loveseat",
+      "brand": "Ligne Roset",
+      "category": "home",
+      "price": 6575,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Togo+Loveseat",
+      "url": "https://ligne-roset.com",
+      "featured": true
+    },
+    {
+      "id": 11,
+      "name": "Base One Max 3-in-1",
+      "brand": "Nomad",
+      "category": "workspace",
+      "price": 149,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Nomad+Charger",
+      "url": "https://nomadgoods.com",
+      "featured": false
+    },
+    {
+      "id": 12,
+      "name": "Aesop Resurrection Hand Wash",
+      "brand": "Aesop",
+      "category": "lifestyle",
+      "price": 44,
+      "image": "https://placehold.co/400x300/f5f5f5/999?text=Aesop",
+      "url": "https://aesop.com",
+      "featured": false
+    }
+  ]
+}
