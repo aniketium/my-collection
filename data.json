@@ -19,122 +19,52 @@
   "items": [
     {
       "id": 1,
-      "name": "MacBook Pro 16\"",
+      "name": "MacBook Pro 14\"",
       "brand": "Apple",
       "category": "tech",
-      "price": 2499,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=MacBook+Pro",
-      "url": "https://apple.com/macbook-pro",
+      "price": 1999,
+      "image": "images/macbook-pro-m4.jpg",
+      "url": "https://www.apple.com/shop/buy-mac/macbook-pro",
       "featured": true
     },
     {
       "id": 2,
-      "name": "Studio Display",
+      "name": "iPhone 17 Pro",
       "brand": "Apple",
       "category": "tech",
-      "price": 1599,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Studio+Display",
-      "url": "https://apple.com/studio-display",
-      "featured": false
+      "price": 1099,
+      "image": "images/iphone-17-pro-silver.jpg",
+      "url": "https://www.apple.com/iphone-17-pro/",
+      "featured": true
     },
     {
       "id": 3,
-      "name": "Aeron Chair",
-      "brand": "Herman Miller",
+      "name": "Magic Trackpad",
+      "brand": "Apple",
       "category": "workspace",
-      "price": 1930,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Aeron+Chair",
-      "url": "https://hermanmiller.com",
-      "featured": true
+      "price": 129,
+      "image": "images/magic-trackpad.jpg",
+      "url": "https://www.apple.com/shop/product/MK2C3LL/A/magic-trackpad",
+      "featured": false
     },
     {
       "id": 4,
-      "name": "Stagg EKG Electric Kettle",
-      "brand": "Fellow",
-      "category": "coffee",
-      "price": 200,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Stagg+EKG",
-      "url": "https://fellowproducts.com",
-      "featured": false
+      "name": "MX Master 3S",
+      "brand": "Logitech",
+      "category": "workspace",
+      "price": 99,
+      "image": "images/mx-master-3s.png",
+      "url": "https://www.logitech.com/en-us/shop/p/mx-master-3s",
+      "featured": true
     },
     {
       "id": 5,
-      "name": "Speedmaster",
-      "brand": "Omega",
-      "category": "watches",
-      "price": 7800,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Speedmaster",
-      "url": "https://omegawatches.com",
-      "featured": true
-    },
-    {
-      "id": 6,
-      "name": "AirPods Max",
-      "brand": "Apple",
-      "category": "tech",
-      "price": 549,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=AirPods+Max",
-      "url": "https://apple.com/airpods-max",
-      "featured": false
-    },
-    {
-      "id": 7,
-      "name": "Carry-On",
-      "brand": "Away",
-      "category": "travel",
-      "price": 275,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Away+Carry-On",
-      "url": "https://awaytravel.com",
-      "featured": false
-    },
-    {
-      "id": 8,
-      "name": "Standing Desk",
-      "brand": "Uplift",
+      "name": "K2 Wireless Mechanical Keyboard",
+      "brand": "Keychron",
       "category": "workspace",
-      "price": 899,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Standing+Desk",
-      "url": "https://upliftdesk.com",
-      "featured": true
-    },
-    {
-      "id": 9,
-      "name": "Dieter Rams: The Complete Works",
-      "brand": "Phaidon",
-      "category": "books",
       "price": 59,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Dieter+Rams",
-      "url": "https://phaidon.com",
-      "featured": false
-    },
-    {
-      "id": 10,
-      "name": "Togo Loveseat",
-      "brand": "Ligne Roset",
-      "category": "home",
-      "price": 6575,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Togo+Loveseat",
-      "url": "https://ligne-roset.com",
-      "featured": true
-    },
-    {
-      "id": 11,
-      "name": "Base One Max 3-in-1",
-      "brand": "Nomad",
-      "category": "workspace",
-      "price": 149,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Nomad+Charger",
-      "url": "https://nomadgoods.com",
-      "featured": false
-    },
-    {
-      "id": 12,
-      "name": "Aesop Resurrection Hand Wash",
-      "brand": "Aesop",
-      "category": "lifestyle",
-      "price": 44,
-      "image": "https://placehold.co/400x300/f5f5f5/999?text=Aesop",
-      "url": "https://aesop.com",
+      "image": "images/keychron-k2.jpg",
+      "url": "https://www.keychron.com/products/keychron-k2-wireless-mechanical-keyboard",
       "featured": false
     }
   ]
