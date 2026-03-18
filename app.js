@@ -511,7 +511,12 @@ function saveItem() {
   } else {
     stored.push(item);
   }
-  saveStoredItems(stored);
+  try {
+    saveStoredItems(stored);
+  } catch (e) {
+    alert('Failed to save — image may be too large for browser storage. Try a smaller image or use a URL instead.');
+    return;
+  }
   hideForm();
   renderAdminPanel();
 }
@@ -547,7 +552,7 @@ function switchImageTab(tab) {
   document.getElementById('imageTabUpload').style.display = tab === 'upload' ? '' : 'none';
 }
 
-// Process uploaded file to base64
+// Process uploaded file — resize and compress to JPEG
 function handleImageFile(file) {
   if (!file || !file.type.startsWith('image/')) return;
   if (file.size > 5 * 1024 * 1024) {
@@ -556,9 +561,25 @@ function handleImageFile(file) {
   }
   const reader = new FileReader();
   reader.onload = (e) => {
-    const dataUrl = e.target.result;
-    document.getElementById('itemImage').value = dataUrl;
-    document.getElementById('imagePreviewImg').innerHTML = `<img src="${dataUrl}" alt="preview">`;
+    const img = new Image();
+    img.onload = () => {
+      // Resize to max 800px on longest side to keep localStorage manageable
+      const MAX = 800;
+      let w = img.width, h = img.height;
+      if (w > MAX || h > MAX) {
+        if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+        else { w = Math.round(w * MAX / h); h = MAX; }
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      document.getElementById('itemImage').value = dataUrl;
+      document.getElementById('imagePreviewImg').innerHTML = `<img src="${dataUrl}" alt="preview">`;
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
