@@ -55,6 +55,7 @@ async function init() {
     currency = data.currency || '$';
     renderCategoryPills();
     renderFooterCategories();
+    renderLibraryShelf();
     renderProducts();
     renderStats();
     setupEventListeners();
@@ -68,7 +69,8 @@ function renderStats() {
   const container = document.getElementById('heroStats');
   const countEl = document.getElementById('itemCount');
   const items = getAllItems();
-  const total = items.reduce((sum, i) => sum + (i.price || 0), 0);
+  const nonBooks = items.filter(i => i.category !== 'books');
+  const total = nonBooks.reduce((sum, i) => sum + (i.price || 0), 0);
 
   if (container) {
     container.innerHTML = `
@@ -125,7 +127,10 @@ function renderFooterCategories() {
 function getFilteredItems() {
   let items = getAllItems();
 
-  if (currentCategory !== 'all') {
+  if (currentCategory === 'all') {
+    // Hide books from the default "All" view — they have their own shelf
+    items = items.filter(item => item.category !== 'books');
+  } else {
     items = items.filter(item => item.category === currentCategory);
   }
 
@@ -150,27 +155,64 @@ function getFilteredItems() {
   return items;
 }
 
+// ===== Render Library Shelf =====
+function renderLibraryShelf() {
+  const section = document.getElementById('librarySection');
+  const shelf = document.getElementById('libraryShelf');
+  const countEl = document.getElementById('bookCount');
+  if (!section || !shelf) return;
+
+  const books = getAllItems().filter(i => i.category === 'books');
+  if (books.length === 0) return;
+
+  section.style.display = '';
+  if (countEl) countEl.textContent = `${books.length} books`;
+
+  shelf.innerHTML = books.map(book => `
+    <div class="book-card">
+      <div class="book-cover">
+        ${book.image
+          ? `<img src="${book.image}" alt="${book.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'book-placeholder\\'>${book.name}</div>'">`
+          : `<div class="book-placeholder">${book.name}</div>`
+        }
+      </div>
+      <div class="book-info">
+        <div class="book-title">${book.name}</div>
+        <div class="book-author">${book.brand}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
 // ===== Render Product Card =====
 function createProductCard(item) {
   const card = document.createElement('div');
-  card.className = 'product-card';
+  const isBook = item.category === 'books';
+  card.className = `product-card${isBook ? ' book-card-grid' : ''}`;
+
+  const priceDisplay = item.price > 0 ? formatPrice(item.price) : '';
+  const linkUrl = item.url || '#';
+  const linkAttr = item.url ? `href="${item.url}" target="_blank" rel="noopener"` : 'href="#"';
 
   card.innerHTML = `
     <div class="card-image">
       ${item.featured ? `<span class="card-badge">Fav</span>` : ''}
-      <a href="${item.url}" target="_blank" rel="noopener" class="card-link" aria-label="View ${item.name}">
+      ${item.url ? `<a ${linkAttr} class="card-link" aria-label="View ${item.name}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="7" y1="17" x2="17" y2="7"></line>
           <polyline points="7 7 17 7 17 17"></polyline>
         </svg>
-      </a>
-      <img src="${item.image}" alt="${item.name}" loading="lazy">
+      </a>` : ''}
+      ${item.image
+        ? `<img src="${item.image}" alt="${item.name}" loading="lazy">`
+        : isBook ? `<div class="book-placeholder" style="width:160px;height:240px;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#334155,#1e293b);color:#e2e8f0;font-size:0.85rem;font-weight:600;text-align:center;line-height:1.3;border-radius:4px;">${item.name}</div>` : ''
+      }
     </div>
     <div class="card-info">
-      <span class="card-meta">${item.brand} / ${getCategoryName(item.category)}</span>
+      <span class="card-meta">${isBook ? item.brand : `${item.brand} / ${getCategoryName(item.category)}`}</span>
       <div class="card-bottom">
         <span class="card-name">${item.name}</span>
-        <span class="card-price">${formatPrice(item.price)}</span>
+        ${priceDisplay ? `<span class="card-price">${priceDisplay}</span>` : ''}
       </div>
     </div>
   `;
@@ -216,13 +258,13 @@ function handleSearch(query) {
   }
 
   results.innerHTML = matches.map(item => `
-    <a href="${item.url}" target="_blank" rel="noopener" class="search-result-item">
+    <a href="${item.url || '#'}" ${item.url ? 'target="_blank" rel="noopener"' : ''} class="search-result-item">
       <img src="${item.image}" alt="${item.name}">
       <div class="search-result-info">
         <div class="name">${item.name}</div>
-        <div class="meta">${item.brand} / ${getCategoryName(item.category)}</div>
+        <div class="meta">${item.category === 'books' ? item.brand : `${item.brand} / ${getCategoryName(item.category)}`}</div>
       </div>
-      <span class="search-result-price">${formatPrice(item.price)}</span>
+      ${item.price > 0 ? `<span class="search-result-price">${formatPrice(item.price)}</span>` : ''}
     </a>
   `).join('');
 }

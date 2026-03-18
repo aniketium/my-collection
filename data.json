@@ -5,16 +5,56 @@
     "description": "A personal catalog of the products I use, trust, and love across home, work, and life."
   },
   "categories": [
-    { "id": "tech", "name": "Tech", "icon": "laptop" },
-    { "id": "workspace", "name": "Workspace", "icon": "monitor" },
-    { "id": "home", "name": "Home", "icon": "home" },
-    { "id": "carry", "name": "Carry", "icon": "briefcase" },
-    { "id": "books", "name": "Books", "icon": "book" },
-    { "id": "lifestyle", "name": "Lifestyle", "icon": "heart" },
-    { "id": "coffee", "name": "Coffee", "icon": "coffee" },
-    { "id": "watches", "name": "Watches", "icon": "watch" },
-    { "id": "clothing", "name": "Clothing", "icon": "shirt" },
-    { "id": "travel", "name": "Travel", "icon": "plane" }
+    {
+      "id": "tech",
+      "name": "Tech",
+      "icon": "laptop"
+    },
+    {
+      "id": "workspace",
+      "name": "Workspace",
+      "icon": "monitor"
+    },
+    {
+      "id": "home",
+      "name": "Home",
+      "icon": "home"
+    },
+    {
+      "id": "carry",
+      "name": "Carry",
+      "icon": "briefcase"
+    },
+    {
+      "id": "books",
+      "name": "Books",
+      "icon": "book"
+    },
+    {
+      "id": "lifestyle",
+      "name": "Lifestyle",
+      "icon": "heart"
+    },
+    {
+      "id": "coffee",
+      "name": "Coffee",
+      "icon": "coffee"
+    },
+    {
+      "id": "watches",
+      "name": "Watches",
+      "icon": "watch"
+    },
+    {
+      "id": "clothing",
+      "name": "Clothing",
+      "icon": "shirt"
+    },
+    {
+      "id": "travel",
+      "name": "Travel",
+      "icon": "plane"
+    }
   ],
   "currency": "₹",
   "items": [
@@ -76,6 +116,836 @@
       "price": 7999,
       "image": "images/keychron-k2.jpg",
       "url": "https://keychron.in/product/keychron-k2-wireless-mechanical-keyboard/",
+      "featured": false
+    },
+    {
+      "id": 7,
+      "name": "Sex Matters",
+      "brand": "Osho",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780312261603-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 8,
+      "name": "The Almanack of Naval Ravikant",
+      "brand": "Eric Jorgenson",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9781544514215-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 9,
+      "name": "Kill the Daisy",
+      "brand": "Prashant Sharma",
+      "category": "books",
+      "price": 0,
+      "image": "",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 10,
+      "name": "The Mountain is you",
+      "brand": "Brianna Wiest",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/13838236-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 11,
+      "name": "Build Don't Talk",
+      "brand": "Raj Shamani",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/13329405-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 12,
+      "name": "The Art of Dealing with People",
+      "brand": "Les Giblin",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/715533-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 13,
+      "name": "Everyone you hate is going to die",
+      "brand": "Daniel Sloss",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/12373651-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 14,
+      "name": "Still Me",
+      "brand": "Jojo Moyes",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780399562464-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 15,
+      "name": "Do it today",
+      "brand": "Darius Foroux",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/13165210-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 16,
+      "name": "The Anthology of Balaji",
+      "brand": "Eric Jorgenson",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/15178489-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 17,
+      "name": "Same as Ever",
+      "brand": "Morgan Housel",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/14157635-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 18,
+      "name": "The Psychology of Money",
+      "brand": "Morgan Housel",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 19,
+      "name": "Actionable Gamification",
+      "brand": "Yu-kai Chou",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/12031229-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 20,
+      "name": "Elon Musk",
+      "brand": "Walter Isaacson",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9781982181284-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 21,
+      "name": "Games People Play",
+      "brand": "Eric Berne",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/0345410033-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 22,
+      "name": "A Life in Parts",
+      "brand": "Bryan Cranston",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/14490773-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 23,
+      "name": "Surely you're joking Mr. Feynman",
+      "brand": "Richard Phillips Feynman",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/9274698-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 24,
+      "name": "The Beginning of Infinity",
+      "brand": "David Deutsch",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8622269-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 25,
+      "name": "The Brother's Karamazov",
+      "brand": "Fyodor Dostoevsky",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/11263774-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 26,
+      "name": "Crime and Punishment",
+      "brand": "Fyodor Dostoevsky",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780486415871-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 27,
+      "name": "The Iliad",
+      "brand": "Homer",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/12621988-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 28,
+      "name": "The Art of War",
+      "brand": "Sun Tzu",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/4849549-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 29,
+      "name": "How the Pill Changes Everything",
+      "brand": "Sarah E. Hill",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/9007850-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 30,
+      "name": "Range",
+      "brand": "David Epstein",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780735214484-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 31,
+      "name": "The Fountainhead",
+      "brand": "Ayn Rand",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/6767765-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 32,
+      "name": "Siddhartha",
+      "brand": "Hermann Hesse",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/6562535-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 33,
+      "name": "The Kite Runner",
+      "brand": "Khaled Hosseini",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/14846827-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 34,
+      "name": "When breath becomes Air",
+      "brand": "Paul Kalanithi",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780812988406-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 35,
+      "name": "The Minimalist Entrepreneur",
+      "brand": "Sahil Lavingia",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10846857-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 36,
+      "name": "Alchemy",
+      "brand": "Rory Sutherland",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10184444-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 37,
+      "name": "Finite and Infinite Games",
+      "brand": "James P. Carse",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/6609213-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 38,
+      "name": "Flow",
+      "brand": "Mihaly Csikszentmihalyi",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780061339202-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 39,
+      "name": "Emotional Agility",
+      "brand": "Susan David",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8906617-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 40,
+      "name": "The Brief History of Intelligence",
+      "brand": "Max Bennett",
+      "category": "books",
+      "price": 0,
+      "image": "",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 41,
+      "name": "Chaos",
+      "brand": "James Gleick",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/94249-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 42,
+      "name": "The Count of Monte Cristo",
+      "brand": "Alexandre Dumas",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8851690-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 43,
+      "name": "The man from the Future",
+      "brand": "Ananyo Bhattacharya",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/13276444-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 44,
+      "name": "Originals",
+      "brand": "Adam Grant",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780525429562-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 45,
+      "name": "The Tipping Point",
+      "brand": "Malcolm Gladwell",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10873292-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 46,
+      "name": "Building a Story Brand",
+      "brand": "Donald Miller",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8193589-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 47,
+      "name": "Predictably Irrational",
+      "brand": "Dan Ariely",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/2314080-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 48,
+      "name": "Algorithms to live by",
+      "brand": "Brian Christian",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8042539-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 49,
+      "name": "Building a Second Brain",
+      "brand": "Tiago Forte",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/12372866-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 50,
+      "name": "Essentialism",
+      "brand": "Greg McKeown",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780804137386-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 51,
+      "name": "How Innovation Works",
+      "brand": "Matt Ridley",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10101301-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 52,
+      "name": "Surrounded by Idiots",
+      "brand": "Thomas Erikson",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10105591-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 53,
+      "name": "Behave",
+      "brand": "Robert M. Sapolsky",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8814831-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 54,
+      "name": "The First Minute",
+      "brand": "Chris Fenning",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/11262870-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 55,
+      "name": "The Art of Impossible",
+      "brand": "Steven Kotler",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10672006-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 56,
+      "name": "Never Split the difference",
+      "brand": "Chris Voss",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780062407801-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 57,
+      "name": "The Upanishads",
+      "brand": "Swami Paramananda",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/9060486-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 58,
+      "name": "The Unaccountabilty Machine",
+      "brand": "Dan Davies",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9781788167383-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 59,
+      "name": "Poor Charlie's Almanack",
+      "brand": "Charles T. Munger",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8337563-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 60,
+      "name": "Why we Die?",
+      "brand": "Venki Ramakrishnan",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780063113923-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 61,
+      "name": "Pour your heart into it",
+      "brand": "Howard Schultz",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/545501-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 62,
+      "name": "Outlive",
+      "brand": "Peter Attia",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/13191259-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 63,
+      "name": "The Art of Seduction",
+      "brand": "Robert Greene",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780142001196-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 64,
+      "name": "The Book of the Samurai",
+      "brand": "Yamamoto Tsunetomo",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/0140441468-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 65,
+      "name": "Copywriting Secrets",
+      "brand": "Jim Edwards",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10497499-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 66,
+      "name": "The Book of Women",
+      "brand": "Osho",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780312320720-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 67,
+      "name": "Mindset",
+      "brand": "Carol S. Dweck",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/746414-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 68,
+      "name": "Guide to Chocolate",
+      "brand": "Various",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780756633301-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 69,
+      "name": "Human Acts",
+      "brand": "Han Kang",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8870572-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 70,
+      "name": "The Moral Animal",
+      "brand": "Robert Wright",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/5310225-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 71,
+      "name": "Men are from Mars, Women are from Venus",
+      "brand": "John Gray",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10991-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 72,
+      "name": "The Price of Time",
+      "brand": "Edward Chancellor",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780802160065-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 73,
+      "name": "Overcoming Anxiety",
+      "brand": "Helen Kennerley",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/7343224-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 74,
+      "name": "Overcoming Depression",
+      "brand": "Paul Gilbert",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/7460491-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 75,
+      "name": "Overcoming Perfectionism",
+      "brand": "Roz Shafran",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/785163-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 76,
+      "name": "Plays well with others",
+      "brand": "Eric Barker",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9781982104009-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 77,
+      "name": "Before the coffee gets cold",
+      "brand": "Toshikazu Kawaguchi",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10138333-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 78,
+      "name": "The Mastery of Love",
+      "brand": "Don Miguel Ruiz",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/924527-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 79,
+      "name": "The Untethered Soul",
+      "brand": "Michael A. Singer",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10630553-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 80,
+      "name": "Deep Work",
+      "brand": "Cal Newport",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/7988607-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 81,
+      "name": "On Writers and Writing",
+      "brand": "John Gardner",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/9223679-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 82,
+      "name": "Thinking in Systems",
+      "brand": "Donella H. Meadows",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/14420637-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 83,
+      "name": "How to Shoot Videos that don't suck",
+      "brand": "Steve Stockman",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780761163237-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 84,
+      "name": "50 Psychology Summary",
+      "brand": "Various",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/8003766-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 85,
+      "name": "Drive",
+      "brand": "Daniel H. Pink",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9781594484803-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 86,
+      "name": "Lifespan",
+      "brand": "David Sinclair",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9781501191978-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 87,
+      "name": "Thinking Fast and Slow",
+      "brand": "Daniel Kahneman",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/13290711-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 88,
+      "name": "Cosmos",
+      "brand": "Carl Sagan",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/isbn/9780345539434-L.jpg",
+      "url": "",
+      "featured": false
+    },
+    {
+      "id": 89,
+      "name": "No Rules Rules",
+      "brand": "Reed Hastings",
+      "category": "books",
+      "price": 0,
+      "image": "https://covers.openlibrary.org/b/id/10524294-L.jpg",
+      "url": "",
       "featured": false
     }
   ]
