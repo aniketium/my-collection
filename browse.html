@@ -3,80 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browse - My Collection</title>
+  <title>Categories - Inventory</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/>
-        </svg>
+        <span class="logo-text">inventory</span>
+        <span class="logo-dot"></span>
       </a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link">Discover</a>
-        <a href="browse.html" class="nav-link active">Browse</a>
+        <a href="index.html" class="nav-link">Collection</a>
+        <a href="browse.html" class="nav-link active">Categories</a>
         <a href="about.html" class="nav-link">About</a>
       </div>
-      <button class="nav-search-btn" id="searchToggle" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
+      <div class="nav-right"></div>
     </div>
   </nav>
 
-  <!-- Browse Header -->
   <div class="browse-header">
-    <h1>Browse</h1>
+    <h1>Categories</h1>
   </div>
 
-  <!-- Categories Section -->
   <section class="browse-section">
-    <div class="browse-section-header">
-      <h2>By category</h2>
-      <a href="index.html">See all</a>
-    </div>
-    <div class="category-grid" id="categoryGrid">
-      <!-- Populated by JS -->
-    </div>
+    <div class="category-grid" id="categoryGrid"></div>
   </section>
 
-  <!-- Footer -->
   <footer class="footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/>
-        </svg>
-        <p class="footer-disclaimer">A personal collection of products I use, trust, and see real value in.</p>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">inventory<span class="logo-dot"></span></span>
+        <p class="footer-note">A personal catalog of things I use and trust.</p>
       </div>
       <div class="footer-columns">
         <div class="footer-col">
-          <h4>Navigation</h4>
-          <a href="index.html">Discover</a>
-          <a href="browse.html">Browse</a>
+          <h4>Pages</h4>
+          <a href="index.html">Collection</a>
+          <a href="browse.html">Categories</a>
           <a href="about.html">About</a>
         </div>
         <div class="footer-col">
           <h4>Categories</h4>
           <div id="footerCategories"></div>
         </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <a href="https://twitter.com" target="_blank" rel="noopener">Twitter</a>
-          <a href="mailto:hello@example.com">Email</a>
-        </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 My Collection. All rights reserved.</span>
+      <span>&copy; 2026</span>
     </div>
   </footer>
 

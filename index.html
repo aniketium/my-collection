@@ -7,28 +7,30 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- Navigation -->
   <nav class="navbar">
     <div class="nav-container">
       <a href="index.html" class="nav-logo">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/>
-        </svg>
+        <span class="logo-text">inventory</span>
+        <span class="logo-dot"></span>
       </a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link active">Discover</a>
-        <a href="browse.html" class="nav-link">Browse</a>
+        <a href="index.html" class="nav-link active">Collection</a>
+        <a href="browse.html" class="nav-link">Categories</a>
         <a href="about.html" class="nav-link">About</a>
       </div>
-      <button class="nav-search-btn" id="searchToggle" aria-label="Search">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle>
-          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </button>
+      <div class="nav-right">
+        <span class="item-count" id="itemCount"></span>
+        <button class="nav-search-btn" id="searchToggle" aria-label="Search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      </div>
     </div>
   </nav>
 
@@ -40,90 +42,79 @@
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-        <input type="text" id="searchInput" placeholder="Search products..." autocomplete="off">
-        <button class="search-close" id="searchClose">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
+        <input type="text" id="searchInput" placeholder="Search items..." autocomplete="off">
+        <kbd class="search-kbd">esc</kbd>
       </div>
       <div class="search-results" id="searchResults"></div>
     </div>
   </div>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <header class="hero">
-    <div class="hero-badge">
-      <span class="badge-dot"></span>
-      My personal collection
+    <div class="hero-inner">
+      <p class="hero-label">Personal inventory</p>
+      <h1 class="hero-title">Things I own<br>& recommend.</h1>
+      <div class="hero-stats" id="heroStats"></div>
     </div>
-    <h1 class="hero-title">Everything I own,<br>carefully curated</h1>
-    <p class="hero-description">A personal catalog of the products I use, trust, and love across home, work, and life.</p>
   </header>
 
   <!-- Main Content -->
   <main class="main">
     <!-- Filters -->
-    <div class="filters">
+    <div class="toolbar">
       <div class="filter-pills" id="filterPills">
-        <button class="pill active" data-category="all">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-          All
-        </button>
+        <button class="pill active" data-category="all">All</button>
       </div>
-      <div class="sort-wrapper">
-        <label>Sort by:</label>
-        <select id="sortSelect">
+      <div class="toolbar-right">
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid" aria-label="Grid view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-btn" data-view="list" aria-label="List view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+        <select id="sortSelect" class="sort-select">
           <option value="featured">Featured</option>
-          <option value="price-asc">Price: Low to High</option>
           <option value="price-desc">Price: High to Low</option>
-          <option value="name">Name</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="name">Name A-Z</option>
           <option value="brand">Brand</option>
         </select>
       </div>
     </div>
 
     <!-- Product Grid -->
-    <div class="product-grid" id="productGrid">
-      <!-- Populated by JS -->
-    </div>
+    <div class="product-grid" id="productGrid"></div>
 
     <!-- Show More -->
     <div class="show-more-wrapper" id="showMoreWrapper" style="display:none">
-      <button class="btn-show-more" id="showMoreBtn">Show More</button>
+      <button class="btn-show-more" id="showMoreBtn">Load more</button>
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/>
-        </svg>
-        <p class="footer-disclaimer">A personal collection of products I use, trust, and see real value in.</p>
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">inventory<span class="logo-dot"></span></span>
+        <p class="footer-note">A personal catalog of things I use and trust.</p>
       </div>
       <div class="footer-columns">
         <div class="footer-col">
-          <h4>Navigation</h4>
-          <a href="index.html">Discover</a>
-          <a href="browse.html">Browse</a>
+          <h4>Pages</h4>
+          <a href="index.html">Collection</a>
+          <a href="browse.html">Categories</a>
           <a href="about.html">About</a>
         </div>
         <div class="footer-col">
           <h4>Categories</h4>
           <div id="footerCategories"></div>
         </div>
-        <div class="footer-col">
-          <h4>Contact</h4>
-          <a href="https://twitter.com" target="_blank" rel="noopener">Twitter</a>
-          <a href="mailto:hello@example.com">Email</a>
-        </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 My Collection. All rights reserved.</span>
+      <span>&copy; 2026</span>
     </div>
   </footer>
 

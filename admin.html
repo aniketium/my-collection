@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Inventory</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-text">inventory</span>
+        <span class="logo-dot"></span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Collection</a>
+        <a href="browse.html" class="nav-link">Categories</a>
+        <a href="about.html" class="nav-link">About</a>
+      </div>
+      <div class="nav-right">
+        <a href="admin.html" class="nav-link active" style="font-family:var(--mono);font-size:0.75rem;">Admin</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Gate -->
+  <div class="admin-gate" id="adminGate">
+    <h1>Admin Login</h1>
+    <input type="password" id="adminPass" placeholder="Enter password" autofocus>
+    <button class="btn-primary" id="adminLogin">Log in</button>
+    <div class="error-msg" id="adminError"></div>
+  </div>
+
+  <!-- Admin Panel (hidden until login) -->
+  <div class="admin-panel" id="adminPanel" style="display:none">
+    <div class="admin-header">
+      <h1>Manage Items</h1>
+      <div class="admin-actions">
+        <button onclick="exportItems()">Export JSON</button>
+        <button class="btn-primary" onclick="showAddForm()">+ Add Item</button>
+        <button class="btn-danger" onclick="logout()">Log out</button>
+      </div>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div class="admin-form" id="adminForm">
+      <h2 id="formTitle">Add new item</h2>
+      <input type="hidden" id="editId">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="itemName">Name</label>
+          <input type="text" id="itemName" placeholder="MacBook Pro 14&quot;">
+        </div>
+        <div class="form-group">
+          <label for="itemBrand">Brand</label>
+          <input type="text" id="itemBrand" placeholder="Apple">
+        </div>
+        <div class="form-group">
+          <label for="itemCategory">Category</label>
+          <select id="itemCategory">
+            <option value="">Select...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="itemPrice">Price (number only)</label>
+          <input type="number" id="itemPrice" placeholder="199900">
+        </div>
+        <div class="form-group full">
+          <label for="itemImage">Image URL or path</label>
+          <input type="text" id="itemImage" placeholder="images/macbook.jpg or https://...">
+          <div class="image-preview" id="imagePreviewImg">
+            <span class="placeholder">Preview</span>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label for="itemUrl">Product URL</label>
+          <input type="text" id="itemUrl" placeholder="https://apple.com/...">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" id="itemFeatured">
+          <label for="itemFeatured">Mark as Favorite</label>
+        </div>
+      </div>
+      <div class="form-submit">
+        <button class="btn-save" onclick="saveItem()">Save item</button>
+        <button class="btn-cancel" onclick="hideForm()">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Item List -->
+    <div id="adminItemList"></div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

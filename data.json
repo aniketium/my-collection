@@ -16,15 +16,16 @@
     { "id": "clothing", "name": "Clothing", "icon": "shirt" },
     { "id": "travel", "name": "Travel", "icon": "plane" }
   ],
+  "currency": "₹",
   "items": [
     {
       "id": 1,
       "name": "MacBook Pro 14\"",
       "brand": "Apple",
       "category": "tech",
-      "price": 1999,
+      "price": 199900,
       "image": "images/macbook-pro-m4.jpg",
-      "url": "https://www.apple.com/shop/buy-mac/macbook-pro",
+      "url": "https://www.apple.com/in/shop/buy-mac/macbook-pro",
       "featured": true
     },
     {
@@ -32,39 +33,49 @@
       "name": "iPhone 17 Pro",
       "brand": "Apple",
       "category": "tech",
-      "price": 1099,
+      "price": 134900,
       "image": "images/iphone-17-pro-silver.jpg",
-      "url": "https://www.apple.com/iphone-17-pro/",
+      "url": "https://www.apple.com/in/iphone-17-pro/",
       "featured": true
     },
     {
       "id": 3,
-      "name": "Magic Trackpad",
+      "name": "Watch Ultra",
       "brand": "Apple",
-      "category": "workspace",
-      "price": 129,
-      "image": "images/magic-trackpad.jpg",
-      "url": "https://www.apple.com/shop/product/MK2C3LL/A/magic-trackpad",
-      "featured": false
-    },
-    {
-      "id": 4,
-      "name": "MX Master 3S",
-      "brand": "Logitech",
-      "category": "workspace",
-      "price": 99,
-      "image": "images/mx-master-3s.png",
-      "url": "https://www.logitech.com/en-us/shop/p/mx-master-3s",
+      "category": "watches",
+      "price": 89900,
+      "image": "images/apple-watch-ultra.jpg",
+      "url": "https://www.apple.com/in/apple-watch-ultra-2/",
       "featured": true
     },
     {
+      "id": 4,
+      "name": "Magic Trackpad",
+      "brand": "Apple",
+      "category": "workspace",
+      "price": 14900,
+      "image": "images/magic-trackpad.jpg",
+      "url": "https://www.apple.com/in/shop/product/MK2C3ZM/A/magic-trackpad",
+      "featured": false
+    },
+    {
       "id": 5,
+      "name": "MX Master 3S",
+      "brand": "Logitech",
+      "category": "workspace",
+      "price": 8995,
+      "image": "images/mx-master-3s.png",
+      "url": "https://www.logitech.com/en-in/products/mice/mx-master-3s.html",
+      "featured": true
+    },
+    {
+      "id": 6,
       "name": "K2 Wireless Mechanical Keyboard",
       "brand": "Keychron",
       "category": "workspace",
-      "price": 59,
+      "price": 7999,
       "image": "images/keychron-k2.jpg",
-      "url": "https://www.keychron.com/products/keychron-k2-wireless-mechanical-keyboard",
+      "url": "https://keychron.in/product/keychron-k2-wireless-mechanical-keyboard/",
       "featured": false
     }
   ]

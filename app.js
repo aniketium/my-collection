@@ -2,24 +2,47 @@
 let allItems = [];
 let categories = [];
 let siteConfig = {};
+let currency = '$';
 let currentCategory = 'all';
 let currentSort = 'featured';
+let currentView = 'grid';
 let visibleCount = 12;
 const PAGE_SIZE = 12;
+const STORAGE_KEY = 'inventory_items';
 
-// ===== Category Icons (SVG paths) =====
-const categoryIcons = {
-  laptop: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="2" y1="20" x2="22" y2="20"/></svg>',
-  monitor: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
-  home: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>',
-  briefcase: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>',
-  book: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>',
-  heart: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>',
-  coffee: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/></svg>',
-  watch: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"/><polyline points="12 9 12 12 13.5 13.5"/><path d="M16.51 17.35l-.35 3.83a2 2 0 01-2 1.82H9.83a2 2 0 01-2-1.82l-.35-3.83m.01-10.7l.35-3.83A2 2 0 019.83 1h4.35a2 2 0 012 1.82l.35 3.83"/></svg>',
-  shirt: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"/></svg>',
-  plane: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2L16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>'
-};
+// ===== Helpers =====
+function getStoredItems() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch { return []; }
+}
+
+function saveStoredItems(items) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+}
+
+function getAllItems() {
+  const stored = getStoredItems();
+  // Merge: stored items override data.json items by ID, plus add new ones
+  const map = new Map();
+  allItems.forEach(i => map.set(i.id, i));
+  stored.forEach(i => map.set(i.id, i));
+  return Array.from(map.values());
+}
+
+function formatPrice(price) {
+  return currency + price.toLocaleString('en-IN');
+}
+
+function getCategoryName(id) {
+  const cat = categories.find(c => c.id === id);
+  return cat ? cat.name : id;
+}
+
+function nextId() {
+  const items = getAllItems();
+  return items.length ? Math.max(...items.map(i => i.id)) + 1 : 1;
+}
 
 // ===== Init =====
 async function init() {
@@ -29,12 +52,43 @@ async function init() {
     allItems = data.items;
     categories = data.categories;
     siteConfig = data.site;
+    currency = data.currency || '$';
     renderCategoryPills();
     renderFooterCategories();
     renderProducts();
+    renderStats();
     setupEventListeners();
   } catch (err) {
     console.error('Failed to load data:', err);
+  }
+}
+
+// ===== Stats =====
+function renderStats() {
+  const container = document.getElementById('heroStats');
+  const countEl = document.getElementById('itemCount');
+  const items = getAllItems();
+  const total = items.reduce((sum, i) => sum + (i.price || 0), 0);
+
+  if (container) {
+    container.innerHTML = `
+      <div class="stat">
+        <span class="stat-value">${items.length}</span>
+        <span class="stat-label">Items</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">${currency}${total.toLocaleString('en-IN')}</span>
+        <span class="stat-label">Total value</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">${new Set(items.map(i => i.category)).size}</span>
+        <span class="stat-label">Categories</span>
+      </div>
+    `;
+  }
+
+  if (countEl) {
+    countEl.textContent = `${items.length} items`;
   }
 }
 
@@ -44,10 +98,12 @@ function renderCategoryPills() {
   if (!container) return;
 
   categories.forEach(cat => {
+    const items = getAllItems().filter(i => i.category === cat.id);
+    if (items.length === 0) return;
     const btn = document.createElement('button');
     btn.className = 'pill';
     btn.dataset.category = cat.id;
-    btn.innerHTML = `${categoryIcons[cat.icon] || ''} ${cat.name}`;
+    btn.textContent = cat.name;
     container.appendChild(btn);
   });
 }
@@ -67,14 +123,12 @@ function renderFooterCategories() {
 
 // ===== Get Filtered & Sorted Items =====
 function getFilteredItems() {
-  let items = [...allItems];
+  let items = getAllItems();
 
-  // Filter
   if (currentCategory !== 'all') {
     items = items.filter(item => item.category === currentCategory);
   }
 
-  // Sort
   switch (currentSort) {
     case 'featured':
       items.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -96,42 +150,24 @@ function getFilteredItems() {
   return items;
 }
 
-// ===== Format Price =====
-function formatPrice(price) {
-  return '$' + price.toLocaleString('en-US');
-}
-
-// ===== Get Category Name =====
-function getCategoryName(id) {
-  const cat = categories.find(c => c.id === id);
-  return cat ? cat.name : id;
-}
-
 // ===== Render Product Card =====
 function createProductCard(item) {
   const card = document.createElement('div');
   card.className = 'product-card';
 
   card.innerHTML = `
-    <div class="card-top">
-      ${item.featured ? `
-        <span class="card-badge">
-          <svg viewBox="0 0 24 24" fill="var(--accent)" stroke="none"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-          Favorite
-        </span>
-      ` : '<span class="card-badge"></span>'}
+    <div class="card-image">
+      ${item.featured ? `<span class="card-badge">Fav</span>` : ''}
       <a href="${item.url}" target="_blank" rel="noopener" class="card-link" aria-label="View ${item.name}">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="7" y1="17" x2="17" y2="7"></line>
           <polyline points="7 7 17 7 17 17"></polyline>
         </svg>
       </a>
-    </div>
-    <div class="card-image">
       <img src="${item.image}" alt="${item.name}" loading="lazy">
     </div>
     <div class="card-info">
-      <span class="card-meta"><span class="brand">${item.brand}</span> &middot; ${getCategoryName(item.category)}</span>
+      <span class="card-meta">${item.brand} / ${getCategoryName(item.category)}</span>
       <div class="card-bottom">
         <span class="card-name">${item.name}</span>
         <span class="card-price">${formatPrice(item.price)}</span>
@@ -152,9 +188,8 @@ function renderProducts() {
   const visible = items.slice(0, visibleCount);
 
   grid.innerHTML = '';
-  visible.forEach(item => {
-    grid.appendChild(createProductCard(item));
-  });
+  grid.className = `product-grid${currentView === 'list' ? ' list-view' : ''}`;
+  visible.forEach(item => grid.appendChild(createProductCard(item)));
 
   if (showMoreWrapper) {
     showMoreWrapper.style.display = items.length > visibleCount ? '' : 'none';
@@ -166,13 +201,10 @@ function handleSearch(query) {
   const results = document.getElementById('searchResults');
   if (!results) return;
 
-  if (!query.trim()) {
-    results.innerHTML = '';
-    return;
-  }
+  if (!query.trim()) { results.innerHTML = ''; return; }
 
   const q = query.toLowerCase();
-  const matches = allItems.filter(item =>
+  const matches = getAllItems().filter(item =>
     item.name.toLowerCase().includes(q) ||
     item.brand.toLowerCase().includes(q) ||
     item.category.toLowerCase().includes(q)
@@ -188,7 +220,7 @@ function handleSearch(query) {
       <img src="${item.image}" alt="${item.name}">
       <div class="search-result-info">
         <div class="name">${item.name}</div>
-        <div class="meta">${item.brand} &middot; ${getCategoryName(item.category)}</div>
+        <div class="meta">${item.brand} / ${getCategoryName(item.category)}</div>
       </div>
       <span class="search-result-price">${formatPrice(item.price)}</span>
     </a>
@@ -197,13 +229,11 @@ function handleSearch(query) {
 
 // ===== Event Listeners =====
 function setupEventListeners() {
-  // Category filter pills
   const pillContainer = document.getElementById('filterPills');
   if (pillContainer) {
     pillContainer.addEventListener('click', (e) => {
       const pill = e.target.closest('.pill');
       if (!pill) return;
-
       pillContainer.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
       pill.classList.add('active');
       currentCategory = pill.dataset.category;
@@ -221,6 +251,16 @@ function setupEventListeners() {
     });
   }
 
+  // View toggle
+  document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentView = btn.dataset.view;
+      renderProducts();
+    });
+  });
+
   // Show more
   const showMoreBtn = document.getElementById('showMoreBtn');
   if (showMoreBtn) {
@@ -233,7 +273,6 @@ function setupEventListeners() {
   // Search
   const searchToggle = document.getElementById('searchToggle');
   const searchOverlay = document.getElementById('searchOverlay');
-  const searchClose = document.getElementById('searchClose');
   const searchInput = document.getElementById('searchInput');
 
   if (searchToggle && searchOverlay) {
@@ -242,17 +281,12 @@ function setupEventListeners() {
       setTimeout(() => searchInput?.focus(), 100);
     });
 
-    searchClose?.addEventListener('click', () => {
-      searchOverlay.classList.remove('active');
-      if (searchInput) searchInput.value = '';
-      const results = document.getElementById('searchResults');
-      if (results) results.innerHTML = '';
-    });
-
     searchOverlay.addEventListener('click', (e) => {
       if (e.target === searchOverlay) {
         searchOverlay.classList.remove('active');
         if (searchInput) searchInput.value = '';
+        const results = document.getElementById('searchResults');
+        if (results) results.innerHTML = '';
       }
     });
 
@@ -261,7 +295,6 @@ function setupEventListeners() {
         searchOverlay.classList.remove('active');
         if (searchInput) searchInput.value = '';
       }
-      // Cmd/Ctrl+K to open search
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         searchOverlay.classList.add('active');
@@ -269,20 +302,16 @@ function setupEventListeners() {
       }
     });
 
-    searchInput?.addEventListener('input', (e) => {
-      handleSearch(e.target.value);
-    });
+    searchInput?.addEventListener('input', (e) => handleSearch(e.target.value));
   }
 
-  // URL params (for category links)
+  // URL params
   const params = new URLSearchParams(window.location.search);
   const cat = params.get('category');
   if (cat && categories.find(c => c.id === cat)) {
     currentCategory = cat;
     const pills = document.querySelectorAll('.pill');
-    pills.forEach(p => {
-      p.classList.toggle('active', p.dataset.category === cat);
-    });
+    pills.forEach(p => p.classList.toggle('active', p.dataset.category === cat));
     renderProducts();
   }
 }
@@ -292,6 +321,7 @@ function initBrowse() {
   fetch('data.json').then(r => r.json()).then(data => {
     allItems = data.items;
     categories = data.categories;
+    currency = data.currency || '$';
     renderBrowseCategories();
     renderFooterCategories();
   });
@@ -302,35 +332,237 @@ function renderBrowseCategories() {
   if (!grid) return;
 
   categories.forEach(cat => {
-    const count = allItems.filter(i => i.category === cat.id).length;
-    if (count === 0) return;
-
-    const firstItem = allItems.find(i => i.category === cat.id);
+    const items = getAllItems().filter(i => i.category === cat.id);
+    if (items.length === 0) return;
+    const firstItem = items[0];
     const card = document.createElement('a');
     card.className = 'category-card';
     card.href = `index.html?category=${cat.id}`;
-
     card.innerHTML = `
       <div class="category-card-image">
         <img src="${firstItem.image}" alt="${cat.name}" loading="lazy">
       </div>
       <div class="category-card-info">
         <span class="name">${cat.name}</span>
-        <span class="count">${count}</span>
+        <span class="count">${items.length}</span>
       </div>
     `;
-
     grid.appendChild(card);
   });
 }
+
+// ===== Admin Page =====
+function initAdmin() {
+  fetch('data.json').then(r => r.json()).then(data => {
+    allItems = data.items;
+    categories = data.categories;
+    currency = data.currency || '$';
+    setupAdmin();
+  });
+}
+
+function setupAdmin() {
+  const ADMIN_PASS = 'admin123'; // Change this!
+  const gate = document.getElementById('adminGate');
+  const panel = document.getElementById('adminPanel');
+  const passInput = document.getElementById('adminPass');
+  const loginBtn = document.getElementById('adminLogin');
+  const errorMsg = document.getElementById('adminError');
+
+  // Check if already logged in
+  if (sessionStorage.getItem('admin_auth') === 'true') {
+    gate.style.display = 'none';
+    panel.style.display = 'block';
+    renderAdminPanel();
+    return;
+  }
+
+  loginBtn.addEventListener('click', () => {
+    if (passInput.value === ADMIN_PASS) {
+      sessionStorage.setItem('admin_auth', 'true');
+      gate.style.display = 'none';
+      panel.style.display = 'block';
+      renderAdminPanel();
+    } else {
+      errorMsg.textContent = 'Wrong password';
+    }
+  });
+
+  passInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') loginBtn.click();
+  });
+}
+
+function renderAdminPanel() {
+  const list = document.getElementById('adminItemList');
+  const items = getAllItems();
+  const catSelect = document.getElementById('itemCategory');
+
+  // Populate category dropdown
+  if (catSelect && catSelect.options.length <= 1) {
+    categories.forEach(cat => {
+      const opt = document.createElement('option');
+      opt.value = cat.id;
+      opt.textContent = cat.name;
+      catSelect.appendChild(opt);
+    });
+  }
+
+  if (!list) return;
+
+  if (items.length === 0) {
+    list.innerHTML = '<div class="admin-empty">No items yet. Click "Add Item" to get started.</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(item => `
+    <div class="admin-item" data-id="${item.id}">
+      <img class="admin-item-img" src="${item.image}" alt="${item.name}">
+      <div class="admin-item-info">
+        <div class="admin-item-name">${item.name}</div>
+        <div class="admin-item-meta">${item.brand} / ${getCategoryName(item.category)}${item.featured ? ' &bull; Favorite' : ''}</div>
+      </div>
+      <span class="admin-item-price">${formatPrice(item.price)}</span>
+      <div class="admin-item-actions">
+        <button class="btn-edit" onclick="editItem(${item.id})">Edit</button>
+        <button class="btn-delete" onclick="deleteItem(${item.id})">Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Admin form controls
+function showAddForm() {
+  const form = document.getElementById('adminForm');
+  form.classList.add('active');
+  document.getElementById('formTitle').textContent = 'Add new item';
+  document.getElementById('editId').value = '';
+  document.getElementById('itemName').value = '';
+  document.getElementById('itemBrand').value = '';
+  document.getElementById('itemCategory').value = '';
+  document.getElementById('itemPrice').value = '';
+  document.getElementById('itemImage').value = '';
+  document.getElementById('itemUrl').value = '';
+  document.getElementById('itemFeatured').checked = false;
+  document.getElementById('imagePreviewImg').innerHTML = '<span class="placeholder">Preview</span>';
+}
+
+function hideForm() {
+  document.getElementById('adminForm').classList.remove('active');
+}
+
+function editItem(id) {
+  const item = getAllItems().find(i => i.id === id);
+  if (!item) return;
+
+  const form = document.getElementById('adminForm');
+  form.classList.add('active');
+  document.getElementById('formTitle').textContent = 'Edit item';
+  document.getElementById('editId').value = item.id;
+  document.getElementById('itemName').value = item.name;
+  document.getElementById('itemBrand').value = item.brand;
+  document.getElementById('itemCategory').value = item.category;
+  document.getElementById('itemPrice').value = item.price;
+  document.getElementById('itemImage').value = item.image;
+  document.getElementById('itemUrl').value = item.url;
+  document.getElementById('itemFeatured').checked = item.featured;
+  document.getElementById('imagePreviewImg').innerHTML = `<img src="${item.image}" alt="preview">`;
+
+  form.scrollIntoView({ behavior: 'smooth' });
+}
+
+function deleteItem(id) {
+  if (!confirm('Delete this item?')) return;
+  const stored = getStoredItems().filter(i => i.id !== id);
+  // Also mark data.json items as deleted
+  const baseItem = allItems.find(i => i.id === id);
+  if (baseItem) {
+    // Store a deletion marker
+    const deletions = JSON.parse(localStorage.getItem('inventory_deletions') || '[]');
+    deletions.push(id);
+    localStorage.setItem('inventory_deletions', JSON.stringify(deletions));
+  }
+  saveStoredItems(stored);
+  renderAdminPanel();
+}
+
+function saveItem() {
+  const editId = document.getElementById('editId').value;
+  const item = {
+    id: editId ? parseInt(editId) : nextId(),
+    name: document.getElementById('itemName').value.trim(),
+    brand: document.getElementById('itemBrand').value.trim(),
+    category: document.getElementById('itemCategory').value,
+    price: parseInt(document.getElementById('itemPrice').value) || 0,
+    image: document.getElementById('itemImage').value.trim(),
+    url: document.getElementById('itemUrl').value.trim(),
+    featured: document.getElementById('itemFeatured').checked
+  };
+
+  if (!item.name || !item.brand || !item.category) {
+    alert('Please fill in name, brand, and category.');
+    return;
+  }
+
+  const stored = getStoredItems();
+  const idx = stored.findIndex(i => i.id === item.id);
+  if (idx >= 0) {
+    stored[idx] = item;
+  } else {
+    stored.push(item);
+  }
+  saveStoredItems(stored);
+  hideForm();
+  renderAdminPanel();
+}
+
+function exportItems() {
+  const items = getAllItems();
+  const blob = new Blob([JSON.stringify(items, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'inventory-items.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function logout() {
+  sessionStorage.removeItem('admin_auth');
+  location.reload();
+}
+
+// Override getAllItems to respect deletions
+const _originalGetAllItems = getAllItems;
+getAllItems = function() {
+  const deletions = JSON.parse(localStorage.getItem('inventory_deletions') || '[]');
+  return _originalGetAllItems().filter(i => !deletions.includes(i.id));
+};
+
+// Image preview
+document.addEventListener('DOMContentLoaded', () => {
+  const imgInput = document.getElementById('itemImage');
+  if (imgInput) {
+    imgInput.addEventListener('input', (e) => {
+      const preview = document.getElementById('imagePreviewImg');
+      const url = e.target.value.trim();
+      if (url) {
+        preview.innerHTML = `<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>Invalid URL</span>'">`;
+      } else {
+        preview.innerHTML = '<span class="placeholder">Preview</span>';
+      }
+    });
+  }
+});
 
 // ===== Start =====
 if (document.getElementById('productGrid')) {
   init();
 } else if (document.getElementById('categoryGrid')) {
   initBrowse();
+} else if (document.getElementById('adminPanel')) {
+  initAdmin();
 } else {
-  // About or other pages — just load footer categories
   fetch('data.json').then(r => r.json()).then(data => {
     categories = data.categories;
     renderFooterCategories();
