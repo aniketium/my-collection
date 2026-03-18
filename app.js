@@ -185,18 +185,28 @@ function renderLibraryShelf() {
 }
 
 // ===== Render Product Card =====
+function isAdmin() {
+  return sessionStorage.getItem('admin_auth') === 'true';
+}
+
 function createProductCard(item) {
   const card = document.createElement('div');
   const isBook = item.category === 'books';
   card.className = `product-card${isBook ? ' book-card-grid' : ''}`;
 
   const priceDisplay = item.price > 0 ? formatPrice(item.price) : '';
-  const linkUrl = item.url || '#';
   const linkAttr = item.url ? `href="${item.url}" target="_blank" rel="noopener"` : 'href="#"';
+  const admin = isAdmin();
 
   card.innerHTML = `
     <div class="card-image">
       ${item.featured ? `<span class="card-badge">Fav</span>` : ''}
+      ${admin ? `<a href="admin.html#edit-${item.id}" class="card-edit-btn" aria-label="Edit ${item.name}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </a>` : ''}
       ${item.url ? `<a ${linkAttr} class="card-link" aria-label="View ${item.name}">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="7" y1="17" x2="17" y2="7"></line>
@@ -411,20 +421,28 @@ function setupAdmin() {
   const loginBtn = document.getElementById('adminLogin');
   const errorMsg = document.getElementById('adminError');
 
-  // Check if already logged in
-  if (sessionStorage.getItem('admin_auth') === 'true') {
+  function onAdminReady() {
     gate.style.display = 'none';
     panel.style.display = 'block';
     renderAdminPanel();
+    // Auto-open edit form if hash is #edit-{id}
+    const hash = window.location.hash;
+    if (hash.startsWith('#edit-')) {
+      const id = parseInt(hash.replace('#edit-', ''));
+      if (id) editItem(id);
+    }
+  }
+
+  // Check if already logged in
+  if (sessionStorage.getItem('admin_auth') === 'true') {
+    onAdminReady();
     return;
   }
 
   loginBtn.addEventListener('click', () => {
     if (passInput.value === ADMIN_PASS) {
       sessionStorage.setItem('admin_auth', 'true');
-      gate.style.display = 'none';
-      panel.style.display = 'block';
-      renderAdminPanel();
+      onAdminReady();
     } else {
       errorMsg.textContent = 'Wrong password';
     }
@@ -616,6 +634,9 @@ function handleImageFile(file) {
       canvas.width = w;
       canvas.height = h;
       const ctx = canvas.getContext('2d');
+      // Fill white background so transparent PNGs don't turn black when saved as JPEG
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, w, h);
       ctx.drawImage(img, 0, 0, w, h);
       const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
       document.getElementById('itemImage').value = dataUrl;
@@ -664,6 +685,19 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// ===== Admin nav link (show on all pages when logged in) =====
+if (isAdmin() && !document.getElementById('adminPanel')) {
+  const navRight = document.querySelector('.nav-right');
+  if (navRight) {
+    const link = document.createElement('a');
+    link.href = 'admin.html';
+    link.className = 'admin-nav-link';
+    link.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>`;
+    link.title = 'Admin panel';
+    navRight.prepend(link);
+  }
+}
 
 // ===== Start =====
 if (document.getElementById('productGrid')) {

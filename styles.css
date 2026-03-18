@@ -132,6 +132,20 @@ img { max-width: 100%; display: block; }
 
 .nav-search-btn:hover { background: var(--bg-hover); color: var(--text); }
 
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  color: var(--text-muted);
+  transition: all var(--transition);
+  opacity: 0.5;
+}
+
+.admin-nav-link:hover { opacity: 1; color: var(--accent); background: var(--accent-light); }
+
 /* ===== Search Overlay ===== */
 .search-overlay {
   position: fixed;
@@ -551,6 +565,27 @@ img { max-width: 100%; display: block; }
   padding: 2px 7px;
   border-radius: 4px;
 }
+
+.card-edit-btn {
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  transition: all var(--transition);
+  opacity: 0;
+  border: 1px solid var(--border-light);
+  z-index: 2;
+}
+
+.product-card:hover .card-edit-btn { opacity: 0.7; }
+.card-edit-btn:hover { opacity: 1 !important; color: var(--accent); border-color: var(--accent); }
 
 .card-link {
   position: absolute;
