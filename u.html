@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Collection — Inventory</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-text">inventory</span>
+        <span class="logo-dot"></span>
+      </a>
+      <div class="nav-links"></div>
+      <div class="nav-right" id="navRight"></div>
+    </div>
+  </nav>
+
+  <!-- Loading -->
+  <div class="dash-loading" id="pageLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- 404 State -->
+  <div class="about-content" id="notFound" style="display:none">
+    <h1>User not found</h1>
+    <p>This collection doesn't exist. <a href="index.html" style="color:var(--accent)">Go home</a></p>
+  </div>
+
+  <!-- Profile Header -->
+  <header class="hero" id="profileHero" style="display:none">
+    <div class="hero-inner">
+      <div class="profile-header-row">
+        <div class="profile-avatar-lg" id="profileAvatar"></div>
+        <div>
+          <h1 class="hero-title" id="profileName" style="font-size:2rem;margin-bottom:4px"></h1>
+          <p class="hero-label" id="profileBio" style="text-transform:none;letter-spacing:0;font-size:0.9rem;color:var(--text-secondary)"></p>
+        </div>
+      </div>
+      <div class="hero-stats" id="profileStats"></div>
+    </div>
+  </header>
+
+  <!-- Library Shelf -->
+  <section class="library-section" id="librarySection" style="display:none">
+    <div class="library-inner">
+      <div class="library-header">
+        <div>
+          <h2 class="library-title">Library</h2>
+          <p class="library-subtitle" id="bookCount"></p>
+        </div>
+      </div>
+      <div class="library-shelf" id="libraryShelf"></div>
+    </div>
+  </section>
+
+  <!-- Main Items -->
+  <main class="main" id="mainContent" style="display:none">
+    <div class="toolbar">
+      <div class="filter-pills" id="filterPills">
+        <button class="pill active" data-category="all">All</button>
+      </div>
+      <div class="toolbar-right">
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid" aria-label="Grid view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          </button>
+          <button class="view-btn" data-view="list" aria-label="List view">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+        <select id="sortSelect" class="sort-select">
+          <option value="featured">Featured</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="name">Name A-Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+    <div class="show-more-wrapper" id="showMoreWrapper" style="display:none">
+      <button class="btn-show-more" id="showMoreBtn">Load more</button>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <span class="footer-logo">inventory<span class="logo-dot"></span></span>
+        <p class="footer-note">Track everything you own.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script>
+    let userProfile = null;
+    let userItems = [];
+    let userCategories = [];
+    let currency = '₹';
+    let currentCategory = 'all';
+    let currentSort = 'featured';
+    let currentView = 'grid';
+    let visibleCount = 12;
+    const PAGE_SIZE = 12;
+
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const username = params.get('user');
+      if (!username) { show404(); return; }
+
+      try {
+        userProfile = await db.getProfileByUsername(username);
+        if (!userProfile) { show404(); return; }
+
+        userCategories = await db.getCategories(userProfile.id);
+        userItems = await db.getItems(userProfile.id);
+        currency = userProfile.currency || '₹';
+
+        document.title = `${userProfile.display_name}'s Collection — Inventory`;
+        renderProfile();
+        renderLibraryShelf();
+        renderCategoryPills();
+        renderProducts();
+        setupListeners();
+
+        // Show nav auth buttons
+        const session = await db.getSession();
+        const navRight = document.getElementById('navRight');
+        if (session) {
+          navRight.innerHTML = `<a href="dashboard.html" class="nav-link" style="font-size:0.8rem">My Dashboard</a>`;
+        } else {
+          navRight.innerHTML = `<a href="auth.html" class="nav-link" style="font-size:0.8rem">Sign in</a>`;
+        }
+      } catch (err) {
+        console.error(err);
+        show404();
+        return;
+      }
+
+      document.getElementById('pageLoading').style.display = 'none';
+    })();
+
+    function show404() {
+      document.getElementById('pageLoading').style.display = 'none';
+      document.getElementById('notFound').style.display = '';
+    }
+
+    function formatPrice(price) {
+      return currency + Number(price).toLocaleString('en-IN');
+    }
+
+    function getCategoryName(slug) {
+      const cat = userCategories.find(c => c.slug === slug);
+      return cat ? cat.name : slug;
+    }
+
+    function renderProfile() {
+      document.getElementById('profileHero').style.display = '';
+      document.getElementById('profileAvatar').textContent = (userProfile.display_name || '?')[0].toUpperCase();
+      document.getElementById('profileName').textContent = userProfile.display_name;
+      document.getElementById('profileBio').textContent = userProfile.bio || '';
+
+      const nonBooks = userItems.filter(i => i.category_slug !== 'books');
+      const totalValue = nonBooks.reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0);
+      const usedCats = new Set(userItems.map(i => i.category_slug));
+
+      document.getElementById('profileStats').innerHTML = `
+        <div class="stat"><span class="stat-value">${userItems.length}</span><span class="stat-label">Items</span></div>
+        <div class="stat"><span class="stat-value">${formatPrice(totalValue)}</span><span class="stat-label">Total value</span></div>
+        <div class="stat"><span class="stat-value">${usedCats.size}</span><span class="stat-label">Categories</span></div>
+      `;
+    }
+
+    function renderLibraryShelf() {
+      const section = document.getElementById('librarySection');
+      const shelf = document.getElementById('libraryShelf');
+      const books = userItems.filter(i => i.category_slug === 'books');
+      if (books.length === 0) return;
+
+      section.style.display = '';
+      document.getElementById('bookCount').textContent = `${books.length} books`;
+
+      shelf.innerHTML = books.map(book => `
+        <div class="book-card">
+          <div class="book-cover">
+            ${book.image_url
+              ? `<img src="${book.image_url}" alt="${book.name}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'book-placeholder\\'>${book.name}</div>'">`
+              : `<div class="book-placeholder">${book.name}</div>`
+            }
+          </div>
+          <div class="book-info">
+            <div class="book-title">${book.name}</div>
+            <div class="book-author">${book.brand || ''}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderCategoryPills() {
+      const container = document.getElementById('filterPills');
+      document.getElementById('mainContent').style.display = '';
+
+      userCategories.forEach(cat => {
+        const count = userItems.filter(i => i.category_slug === cat.slug).length;
+        if (count === 0) return;
+        const btn = document.createElement('button');
+        btn.className = 'pill';
+        btn.dataset.category = cat.slug;
+        btn.textContent = cat.name;
+        container.appendChild(btn);
+      });
+    }
+
+    function getFilteredItems() {
+      let items = [...userItems];
+      if (currentCategory === 'all') {
+        items = items.filter(i => i.category_slug !== 'books');
+      } else {
+        items = items.filter(i => i.category_slug === currentCategory);
+      }
+      switch (currentSort) {
+        case 'featured': items.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)); break;
+        case 'price-asc': items.sort((a, b) => (a.price || 0) - (b.price || 0)); break;
+        case 'price-desc': items.sort((a, b) => (b.price || 0) - (a.price || 0)); break;
+        case 'name': items.sort((a, b) => a.name.localeCompare(b.name)); break;
+      }
+      return items;
+    }
+
+    function createProductCard(item) {
+      const card = document.createElement('div');
+      const isBook = item.category_slug === 'books';
+      card.className = `product-card${isBook ? ' book-card-grid' : ''}`;
+      const priceDisplay = parseFloat(item.price) > 0 ? formatPrice(item.price) : '';
+
+      card.innerHTML = `
+        <div class="card-image">
+          ${item.featured ? '<span class="card-badge">Fav</span>' : ''}
+          ${item.for_sale ? '<span class="card-badge sale-badge">For Sale</span>' : ''}
+          ${item.product_url ? `<a href="${item.product_url}" target="_blank" rel="noopener" class="card-link">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </a>` : ''}
+          ${item.image_url
+            ? `<img src="${item.image_url}" alt="${item.name}" loading="lazy">`
+            : isBook ? `<div class="book-placeholder" style="width:160px;height:240px;display:flex;align-items:center;justify-content:center;padding:16px;background:linear-gradient(135deg,#334155,#1e293b);color:#e2e8f0;font-size:0.85rem;font-weight:600;text-align:center;line-height:1.3;border-radius:4px">${item.name}</div>` : ''
+          }
+        </div>
+        <div class="card-info">
+          <span class="card-meta">${isBook ? (item.brand || '') : `${item.brand || ''} / ${getCategoryName(item.category_slug)}`}</span>
+          <div class="card-bottom">
+            <span class="card-name">${item.name}</span>
+            ${priceDisplay ? `<span class="card-price">${priceDisplay}</span>` : ''}
+          </div>
+        </div>
+      `;
+      return card;
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      const showMoreWrapper = document.getElementById('showMoreWrapper');
+      const items = getFilteredItems();
+      const visible = items.slice(0, visibleCount);
+
+      grid.innerHTML = '';
+      grid.className = `product-grid${currentView === 'list' ? ' list-view' : ''}`;
+      visible.forEach(item => grid.appendChild(createProductCard(item)));
+
+      if (showMoreWrapper) {
+        showMoreWrapper.style.display = items.length > visibleCount ? '' : 'none';
+      }
+    }
+
+    function setupListeners() {
+      document.getElementById('filterPills').addEventListener('click', (e) => {
+        const pill = e.target.closest('.pill');
+        if (!pill) return;
+        document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        currentCategory = pill.dataset.category;
+        visibleCount = PAGE_SIZE;
+        renderProducts();
+      });
+
+      document.getElementById('sortSelect').addEventListener('change', (e) => {
+        currentSort = e.target.value;
+        renderProducts();
+      });
+
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentView = btn.dataset.view;
+          renderProducts();
+        });
+      });
+
+      document.getElementById('showMoreBtn')?.addEventListener('click', () => {
+        visibleCount += PAGE_SIZE;
+        renderProducts();
+      });
+    }
+  </script>
+</body>
+</html>

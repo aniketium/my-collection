@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - Inventory</title>
+  <title>About — Inventory</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,45 +17,57 @@
         <span class="logo-dot"></span>
       </a>
       <div class="nav-links">
-        <a href="index.html" class="nav-link">Collection</a>
-        <a href="browse.html" class="nav-link">Categories</a>
+        <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link active">About</a>
       </div>
-      <div class="nav-right"></div>
+      <div class="nav-right" id="navRight"></div>
     </div>
   </nav>
 
   <div class="about-content">
-    <h1>About</h1>
-    <p>This is my personal catalog of everything I own and love. I believe the objects we surround ourselves with matter -- they shape our daily experience, productivity, and well-being.</p>
-    <p>Every item here is something I've personally purchased, used extensively, and would recommend without hesitation. No sponsorships, no freebies -- just honest picks from someone who cares about quality, design, and craftsmanship.</p>
-    <p>I built this site as a way to organize and share the products that have genuinely improved my life. If something makes the list, it earned its place.</p>
+    <h1>About Inventory</h1>
+    <p>Inventory is a platform for people who want to be more mindful about what they own. We believe the objects we surround ourselves with matter — they shape our daily experience, productivity, and well-being.</p>
+    <p>Create your personal catalog of everything you own. See the full picture: how many things you have, their total value, and what categories dominate your life. Every item tells a story about a choice you made.</p>
+    <p>Share your collection with others. Discover what people you admire own and recommend. And when something no longer serves you, list it for sale in our community marketplace.</p>
+    <p style="margin-top:32px"><a href="auth.html" style="color:var(--accent);font-weight:500">Create your free account &rarr;</a></p>
   </div>
 
   <footer class="footer">
     <div class="footer-inner">
       <div class="footer-left">
         <span class="footer-logo">inventory<span class="logo-dot"></span></span>
-        <p class="footer-note">A personal catalog of things I use and trust.</p>
+        <p class="footer-note">Track everything you own. Be mindful about your possessions.</p>
       </div>
       <div class="footer-columns">
         <div class="footer-col">
-          <h4>Pages</h4>
-          <a href="index.html">Collection</a>
-          <a href="browse.html">Categories</a>
+          <h4>Product</h4>
+          <a href="index.html">Home</a>
           <a href="about.html">About</a>
-        </div>
-        <div class="footer-col">
-          <h4>Categories</h4>
-          <div id="footerCategories"></div>
+          <a href="auth.html">Get started</a>
         </div>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026</span>
+      <span>&copy; 2026 Inventory</span>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script>
+    (async () => {
+      const session = await db.getSession();
+      const navRight = document.getElementById('navRight');
+      if (session) {
+        navRight.innerHTML = `<a href="dashboard.html" class="btn-nav-primary">My Inventory</a>`;
+      } else {
+        navRight.innerHTML = `
+          <a href="auth.html" class="nav-link">Sign in</a>
+          <a href="auth.html" class="btn-nav-primary">Get started</a>
+        `;
+      }
+    })();
+  </script>
 </body>
 </html>

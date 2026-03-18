@@ -3,19 +3,24 @@
 // =============================================
 
 const db = {
+  // Check if Supabase is configured
+  get ready() { return window.sb !== null; },
+
   // ---- Auth ----
   async getUser() {
-    const { data: { user } } = await supabase.auth.getUser();
+    if (!window.sb) return null;
+    const { data: { user } } = await window.sb.auth.getUser();
     return user;
   },
 
   async getSession() {
-    const { data: { session } } = await supabase.auth.getSession();
+    if (!window.sb) return null;
+    const { data: { session } } = await window.sb.auth.getSession();
     return session;
   },
 
   async signUp(email, password, displayName) {
-    const { data, error } = await supabase.auth.signUp({
+    const { data, error } = await window.sb.auth.signUp({
       email,
       password,
       options: { data: { display_name: displayName } }
@@ -25,23 +30,23 @@ const db = {
   },
 
   async signIn(email, password) {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await window.sb.auth.signInWithPassword({ email, password });
     if (error) throw error;
     return data;
   },
 
   async signOut() {
-    const { error } = await supabase.auth.signOut();
+    const { error } = await window.sb.auth.signOut();
     if (error) throw error;
   },
 
   onAuthChange(callback) {
-    return supabase.auth.onAuthStateChange(callback);
+    return window.sb.auth.onAuthStateChange(callback);
   },
 
   // ---- Profile ----
   async getProfile(userId) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('profiles')
       .select('*')
       .eq('id', userId)
@@ -51,7 +56,7 @@ const db = {
   },
 
   async getProfileByUsername(username) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('profiles')
       .select('*')
       .eq('username', username)
@@ -61,7 +66,7 @@ const db = {
   },
 
   async updateProfile(userId, updates) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('profiles')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', userId)
@@ -73,7 +78,7 @@ const db = {
 
   // ---- Categories ----
   async getCategories(userId) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('categories')
       .select('*')
       .eq('user_id', userId)
@@ -83,7 +88,7 @@ const db = {
   },
 
   async addCategory(userId, category) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('categories')
       .insert({ user_id: userId, ...category })
       .select()
@@ -93,7 +98,7 @@ const db = {
   },
 
   async deleteCategory(categoryId) {
-    const { error } = await supabase
+    const { error } = await window.sb
       .from('categories')
       .delete()
       .eq('id', categoryId);
@@ -102,7 +107,7 @@ const db = {
 
   // ---- Items ----
   async getItems(userId) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('items')
       .select('*')
       .eq('user_id', userId)
@@ -112,7 +117,7 @@ const db = {
   },
 
   async getItem(itemId) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('items')
       .select('*')
       .eq('id', itemId)
@@ -122,7 +127,7 @@ const db = {
   },
 
   async addItem(userId, item) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('items')
       .insert({ user_id: userId, ...item })
       .select()
@@ -132,7 +137,7 @@ const db = {
   },
 
   async updateItem(itemId, updates) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('items')
       .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', itemId)
@@ -143,7 +148,7 @@ const db = {
   },
 
   async deleteItem(itemId) {
-    const { error } = await supabase
+    const { error } = await window.sb
       .from('items')
       .delete()
       .eq('id', itemId);
@@ -152,7 +157,7 @@ const db = {
 
   // ---- Marketplace (for_sale items across all users) ----
   async getMarketplaceItems(limit = 50) {
-    const { data, error } = await supabase
+    const { data, error } = await window.sb
       .from('items')
       .select('*, profiles(username, display_name, avatar_url)')
       .eq('for_sale', true)
@@ -167,7 +172,7 @@ const db = {
     const ext = file.name.split('.').pop();
     const fileName = `${userId}/${Date.now()}.${ext}`;
 
-    const { data, error } = await supabase.storage
+    const { data, error } = await window.sb.storage
       .from('item-images')
       .upload(fileName, file, {
         cacheControl: '3600',
@@ -175,7 +180,7 @@ const db = {
       });
     if (error) throw error;
 
-    const { data: { publicUrl } } = supabase.storage
+    const { data: { publicUrl } } = window.sb.storage
       .from('item-images')
       .getPublicUrl(data.path);
 

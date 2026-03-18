@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Inventory</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <span class="logo-text">inventory</span>
+        <span class="logo-dot"></span>
+      </a>
+      <div class="nav-links">
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="#" class="nav-link" id="myCollectionLink">My Collection</a>
+      </div>
+      <div class="nav-right">
+        <div class="user-menu" id="userMenu">
+          <button class="user-menu-btn" id="userMenuBtn">
+            <span class="user-avatar" id="userAvatar"></span>
+            <span class="user-name" id="userName"></span>
+          </button>
+          <div class="user-dropdown" id="userDropdown">
+            <a href="#" id="profileLink">Profile settings</a>
+            <a href="#" id="logoutLink">Sign out</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Loading State -->
+  <div class="dash-loading" id="dashLoading">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Dashboard Content -->
+  <div class="dash-content" id="dashContent" style="display:none">
+
+    <!-- Stats Bar -->
+    <div class="dash-stats" id="dashStats"></div>
+
+    <!-- Action Bar -->
+    <div class="dash-actions">
+      <div class="dash-actions-left">
+        <h1 class="dash-title">My Items</h1>
+      </div>
+      <div class="dash-actions-right">
+        <select id="dashCategoryFilter" class="sort-select">
+          <option value="all">All categories</option>
+        </select>
+        <button class="btn-primary-sm" id="addItemBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add item
+        </button>
+      </div>
+    </div>
+
+    <!-- Add/Edit Item Modal -->
+    <div class="modal-overlay" id="itemModal" style="display:none">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 id="modalTitle">Add new item</h2>
+          <button class="modal-close" id="modalClose">&times;</button>
+        </div>
+        <form id="itemForm">
+          <input type="hidden" id="editItemId">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="itemName">Name</label>
+              <input type="text" id="itemName" placeholder="MacBook Pro 14&quot;" required>
+            </div>
+            <div class="form-group">
+              <label for="itemBrand">Brand / Author</label>
+              <input type="text" id="itemBrand" placeholder="Apple">
+            </div>
+            <div class="form-group">
+              <label for="itemCategory">Category</label>
+              <select id="itemCategory" required>
+                <option value="">Select...</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="itemPrice">Price</label>
+              <input type="number" id="itemPrice" placeholder="0" min="0">
+            </div>
+            <div class="form-group full">
+              <label>Image</label>
+              <div class="image-input-tabs">
+                <button type="button" class="img-tab active" data-tab="url">Paste URL</button>
+                <button type="button" class="img-tab" data-tab="upload">Upload file</button>
+              </div>
+              <div id="imageTabUrl" class="image-tab-content">
+                <input type="text" id="itemImageUrl" placeholder="https://...">
+              </div>
+              <div id="imageTabUpload" class="image-tab-content" style="display:none">
+                <label class="upload-area" id="uploadArea">
+                  <input type="file" id="itemImageFile" accept="image/*" style="display:none">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <span>Click to upload or drag & drop</span>
+                  <span class="upload-hint">PNG, JPG, WebP up to 5MB</span>
+                </label>
+              </div>
+              <div class="image-preview" id="imagePreview">
+                <span class="placeholder">Preview</span>
+              </div>
+            </div>
+            <div class="form-group full">
+              <label for="itemProductUrl">Product URL</label>
+              <input type="text" id="itemProductUrl" placeholder="https://...">
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" id="itemFeatured">
+              <label for="itemFeatured">Favorite</label>
+            </div>
+            <div class="form-group form-check">
+              <input type="checkbox" id="itemForSale">
+              <label for="itemForSale">For Sale</label>
+            </div>
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-save">Save item</button>
+            <button type="button" class="btn-cancel" id="modalCancel">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Profile Settings Modal -->
+    <div class="modal-overlay" id="profileModal" style="display:none">
+      <div class="modal-card modal-sm">
+        <div class="modal-header">
+          <h2>Profile settings</h2>
+          <button class="modal-close" id="profileModalClose">&times;</button>
+        </div>
+        <form id="profileForm">
+          <div class="form-group">
+            <label for="profileUsername">Username</label>
+            <input type="text" id="profileUsername" pattern="[a-z0-9_]+" title="Lowercase letters, numbers, underscores only" required>
+            <span class="form-hint" id="profileUrlHint"></span>
+          </div>
+          <div class="form-group">
+            <label for="profileDisplayName">Display name</label>
+            <input type="text" id="profileDisplayName" required>
+          </div>
+          <div class="form-group">
+            <label for="profileBio">Bio</label>
+            <input type="text" id="profileBio" placeholder="A few words about you" maxlength="160">
+          </div>
+          <div class="form-group">
+            <label for="profileCurrency">Currency symbol</label>
+            <input type="text" id="profileCurrency" placeholder="₹" maxlength="3" style="width:60px">
+          </div>
+          <div class="form-submit">
+            <button type="submit" class="btn-save">Save</button>
+            <button type="button" class="btn-cancel" id="profileCancel">Cancel</button>
+          </div>
+          <div class="auth-error" id="profileError"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Item List -->
+    <div class="dash-items" id="dashItems"></div>
+
+    <!-- Empty State -->
+    <div class="dash-empty" id="dashEmpty" style="display:none">
+      <div class="dash-empty-icon">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+      </div>
+      <h3>Your inventory is empty</h3>
+      <p>Start adding things you own to build your collection.</p>
+      <button class="btn-primary-sm" id="emptyAddBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add your first item
+      </button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="db.js"></script>
+  <script>
+    // ===== Dashboard State =====
+    let currentUser = null;
+    let profile = null;
+    let items = [];
+    let categories = [];
+    let filterCategory = 'all';
+
+    // ===== Init =====
+    (async () => {
+      const session = await db.getSession();
+      if (!session) {
+        window.location.href = 'auth.html';
+        return;
+      }
+      currentUser = session.user;
+
+      try {
+        profile = await db.getProfile(currentUser.id);
+        categories = await db.getCategories(currentUser.id);
+        items = await db.getItems(currentUser.id);
+      } catch (err) {
+        console.error('Failed to load data:', err);
+      }
+
+      renderDashboard();
+      document.getElementById('dashLoading').style.display = 'none';
+      document.getElementById('dashContent').style.display = '';
+    })();
+
+    // ===== Render =====
+    function formatPrice(price) {
+      const sym = profile?.currency || '₹';
+      return sym + Number(price).toLocaleString('en-IN');
+    }
+
+    function renderDashboard() {
+      renderUserNav();
+      renderStats();
+      renderCategoryFilter();
+      renderItems();
+    }
+
+    function renderUserNav() {
+      const nameEl = document.getElementById('userName');
+      const avatarEl = document.getElementById('userAvatar');
+      const collectionLink = document.getElementById('myCollectionLink');
+
+      nameEl.textContent = profile?.display_name || currentUser.email.split('@')[0];
+      avatarEl.textContent = (profile?.display_name || currentUser.email)[0].toUpperCase();
+
+      if (profile?.username) {
+        collectionLink.href = `u.html?user=${profile.username}`;
+        document.getElementById('profileUrlHint').textContent = `Your page: /u.html?user=${profile.username}`;
+      }
+    }
+
+    function renderStats() {
+      const container = document.getElementById('dashStats');
+      const nonBooks = items.filter(i => i.category_slug !== 'books');
+      const totalValue = nonBooks.reduce((sum, i) => sum + (parseFloat(i.price) || 0), 0);
+      const usedCats = new Set(items.map(i => i.category_slug));
+
+      container.innerHTML = `
+        <div class="dash-stat">
+          <span class="dash-stat-value">${items.length}</span>
+          <span class="dash-stat-label">Items</span>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-stat-value">${formatPrice(totalValue)}</span>
+          <span class="dash-stat-label">Total value</span>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-stat-value">${usedCats.size}</span>
+          <span class="dash-stat-label">Categories</span>
+        </div>
+        <div class="dash-stat">
+          <span class="dash-stat-value">${items.filter(i => i.for_sale).length}</span>
+          <span class="dash-stat-label">For sale</span>
+        </div>
+      `;
+    }
+
+    function renderCategoryFilter() {
+      const select = document.getElementById('dashCategoryFilter');
+      select.innerHTML = '<option value="all">All categories</option>';
+      categories.forEach(cat => {
+        const count = items.filter(i => i.category_slug === cat.slug).length;
+        if (count > 0) {
+          select.innerHTML += `<option value="${cat.slug}">${cat.name} (${count})</option>`;
+        }
+      });
+    }
+
+    function getCategoryName(slug) {
+      const cat = categories.find(c => c.slug === slug);
+      return cat ? cat.name : slug;
+    }
+
+    function renderItems() {
+      const container = document.getElementById('dashItems');
+      const emptyState = document.getElementById('dashEmpty');
+
+      let filtered = items;
+      if (filterCategory !== 'all') {
+        filtered = items.filter(i => i.category_slug === filterCategory);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = '';
+        emptyState.style.display = '';
+        return;
+      }
+
+      emptyState.style.display = 'none';
+      container.innerHTML = filtered.map(item => `
+        <div class="dash-item" data-id="${item.id}">
+          <div class="dash-item-img">
+            ${item.image_url
+              ? `<img src="${item.image_url}" alt="${item.name}">`
+              : `<div class="dash-item-placeholder">${item.name[0]}</div>`
+            }
+          </div>
+          <div class="dash-item-info">
+            <div class="dash-item-name">${item.name}</div>
+            <div class="dash-item-meta">
+              ${item.brand ? item.brand + ' / ' : ''}${getCategoryName(item.category_slug)}
+              ${item.featured ? ' &bull; <span class="fav-tag">Fav</span>' : ''}
+              ${item.for_sale ? ' &bull; <span class="sale-tag">For Sale</span>' : ''}
+            </div>
+          </div>
+          <span class="dash-item-price">${parseFloat(item.price) > 0 ? formatPrice(item.price) : ''}</span>
+          <div class="dash-item-actions">
+            <button class="btn-icon" onclick="openEditItem(${item.id})" title="Edit">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="btn-icon btn-icon-danger" onclick="handleDeleteItem(${item.id})" title="Delete">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ===== Item Modal =====
+    function openAddItem() {
+      document.getElementById('modalTitle').textContent = 'Add new item';
+      document.getElementById('editItemId').value = '';
+      document.getElementById('itemForm').reset();
+      document.getElementById('imagePreview').innerHTML = '<span class="placeholder">Preview</span>';
+      populateCategorySelect();
+      document.getElementById('itemModal').style.display = '';
+    }
+
+    function openEditItem(id) {
+      const item = items.find(i => i.id === id);
+      if (!item) return;
+
+      document.getElementById('modalTitle').textContent = 'Edit item';
+      document.getElementById('editItemId').value = item.id;
+      document.getElementById('itemName').value = item.name;
+      document.getElementById('itemBrand').value = item.brand || '';
+      populateCategorySelect();
+      document.getElementById('itemCategory').value = item.category_slug;
+      document.getElementById('itemPrice').value = item.price || '';
+      document.getElementById('itemImageUrl').value = item.image_url || '';
+      document.getElementById('itemProductUrl').value = item.product_url || '';
+      document.getElementById('itemFeatured').checked = item.featured;
+      document.getElementById('itemForSale').checked = item.for_sale;
+
+      const preview = document.getElementById('imagePreview');
+      if (item.image_url) {
+        preview.innerHTML = `<img src="${item.image_url}" alt="preview">`;
+      } else {
+        preview.innerHTML = '<span class="placeholder">Preview</span>';
+      }
+
+      document.getElementById('itemModal').style.display = '';
+    }
+
+    function closeItemModal() {
+      document.getElementById('itemModal').style.display = 'none';
+    }
+
+    function populateCategorySelect() {
+      const select = document.getElementById('itemCategory');
+      select.innerHTML = '<option value="">Select...</option>';
+      categories.forEach(cat => {
+        select.innerHTML += `<option value="${cat.slug}">${cat.name}</option>`;
+      });
+    }
+
+    // ===== Item Form Submit =====
+    document.getElementById('itemForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('.btn-save');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      const editId = document.getElementById('editItemId').value;
+      const itemData = {
+        name: document.getElementById('itemName').value.trim(),
+        brand: document.getElementById('itemBrand').value.trim(),
+        category_slug: document.getElementById('itemCategory').value,
+        price: parseFloat(document.getElementById('itemPrice').value) || 0,
+        image_url: document.getElementById('itemImageUrl').value.trim(),
+        product_url: document.getElementById('itemProductUrl').value.trim(),
+        featured: document.getElementById('itemFeatured').checked,
+        for_sale: document.getElementById('itemForSale').checked
+      };
+
+      try {
+        if (editId) {
+          await db.updateItem(parseInt(editId), itemData);
+        } else {
+          await db.addItem(currentUser.id, itemData);
+        }
+        // Refresh items
+        items = await db.getItems(currentUser.id);
+        renderStats();
+        renderCategoryFilter();
+        renderItems();
+        closeItemModal();
+      } catch (err) {
+        alert('Error saving item: ' + err.message);
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Save item';
+    });
+
+    // ===== Delete Item =====
+    async function handleDeleteItem(id) {
+      if (!confirm('Delete this item?')) return;
+      try {
+        await db.deleteItem(id);
+        items = items.filter(i => i.id !== id);
+        renderStats();
+        renderCategoryFilter();
+        renderItems();
+      } catch (err) {
+        alert('Error deleting item: ' + err.message);
+      }
+    }
+
+    // ===== Image Upload =====
+    document.querySelectorAll('.img-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.img-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        const isUrl = tab.dataset.tab === 'url';
+        document.getElementById('imageTabUrl').style.display = isUrl ? '' : 'none';
+        document.getElementById('imageTabUpload').style.display = isUrl ? 'none' : '';
+      });
+    });
+
+    document.getElementById('itemImageFile')?.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      await handleUpload(file);
+    });
+
+    const uploadArea = document.getElementById('uploadArea');
+    if (uploadArea) {
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('drag-over');
+      });
+      uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+      uploadArea.addEventListener('drop', async (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        await handleUpload(e.dataTransfer.files[0]);
+      });
+    }
+
+    async function handleUpload(file) {
+      if (!file || !file.type.startsWith('image/')) return;
+      if (file.size > 5 * 1024 * 1024) { alert('Image must be under 5MB'); return; }
+
+      try {
+        const url = await db.uploadImage(currentUser.id, file);
+        document.getElementById('itemImageUrl').value = url;
+        document.getElementById('imagePreview').innerHTML = `<img src="${url}" alt="preview">`;
+      } catch (err) {
+        alert('Upload failed: ' + err.message);
+      }
+    }
+
+    // Image URL preview
+    document.getElementById('itemImageUrl')?.addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      const preview = document.getElementById('imagePreview');
+      if (url) {
+        preview.innerHTML = `<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>Invalid URL</span>'">`;
+      } else {
+        preview.innerHTML = '<span class="placeholder">Preview</span>';
+      }
+    });
+
+    // ===== Profile Modal =====
+    document.getElementById('profileLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('profileUsername').value = profile?.username || '';
+      document.getElementById('profileDisplayName').value = profile?.display_name || '';
+      document.getElementById('profileBio').value = profile?.bio || '';
+      document.getElementById('profileCurrency').value = profile?.currency || '₹';
+      document.getElementById('profileModal').style.display = '';
+    });
+
+    document.getElementById('profileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorEl = document.getElementById('profileError');
+      errorEl.textContent = '';
+      const btn = e.target.querySelector('.btn-save');
+      btn.disabled = true;
+
+      try {
+        profile = await db.updateProfile(currentUser.id, {
+          username: document.getElementById('profileUsername').value.trim().toLowerCase(),
+          display_name: document.getElementById('profileDisplayName').value.trim(),
+          bio: document.getElementById('profileBio').value.trim(),
+          currency: document.getElementById('profileCurrency').value.trim() || '₹'
+        });
+        renderUserNav();
+        document.getElementById('profileModal').style.display = 'none';
+      } catch (err) {
+        errorEl.textContent = err.message.includes('duplicate') ? 'Username already taken' : err.message;
+      }
+      btn.disabled = false;
+    });
+
+    // ===== Logout =====
+    document.getElementById('logoutLink').addEventListener('click', async (e) => {
+      e.preventDefault();
+      await db.signOut();
+      window.location.href = 'index.html';
+    });
+
+    // ===== Event Listeners =====
+    document.getElementById('addItemBtn').addEventListener('click', openAddItem);
+    document.getElementById('emptyAddBtn')?.addEventListener('click', openAddItem);
+    document.getElementById('modalClose').addEventListener('click', closeItemModal);
+    document.getElementById('modalCancel').addEventListener('click', closeItemModal);
+    document.getElementById('profileModalClose').addEventListener('click', () => {
+      document.getElementById('profileModal').style.display = 'none';
+    });
+    document.getElementById('profileCancel').addEventListener('click', () => {
+      document.getElementById('profileModal').style.display = 'none';
+    });
+
+    document.getElementById('dashCategoryFilter').addEventListener('change', (e) => {
+      filterCategory = e.target.value;
+      renderItems();
+    });
+
+    // User dropdown
+    document.getElementById('userMenuBtn').addEventListener('click', () => {
+      document.getElementById('userDropdown').classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.user-menu')) {
+        document.getElementById('userDropdown').classList.remove('active');
+      }
+    });
+
+    // Close modals on escape / overlay click
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeItemModal();
+        document.getElementById('profileModal').style.display = 'none';
+      }
+    });
+    document.getElementById('itemModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeItemModal();
+    });
+    document.getElementById('profileModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) e.currentTarget.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
