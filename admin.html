@@ -71,8 +71,22 @@
           <input type="number" id="itemPrice" placeholder="199900">
         </div>
         <div class="form-group full">
-          <label for="itemImage">Image URL or path</label>
-          <input type="text" id="itemImage" placeholder="images/macbook.jpg or https://...">
+          <label>Image</label>
+          <div class="image-input-tabs">
+            <button type="button" class="img-tab active" onclick="switchImageTab('url')">Paste URL</button>
+            <button type="button" class="img-tab" onclick="switchImageTab('upload')">Upload file</button>
+          </div>
+          <div id="imageTabUrl" class="image-tab-content">
+            <input type="text" id="itemImage" placeholder="images/macbook.jpg or https://...">
+          </div>
+          <div id="imageTabUpload" class="image-tab-content" style="display:none">
+            <label class="upload-area" id="uploadArea">
+              <input type="file" id="itemImageFile" accept="image/*" style="display:none">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <span>Click to upload or drag & drop</span>
+              <span class="upload-hint">PNG, JPG, WebP up to 5MB</span>
+            </label>
+          </div>
           <div class="image-preview" id="imagePreviewImg">
             <span class="placeholder">Preview</span>
           </div>

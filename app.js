@@ -539,18 +539,65 @@ getAllItems = function() {
   return _originalGetAllItems().filter(i => !deletions.includes(i.id));
 };
 
-// Image preview
+// Image tab switching
+function switchImageTab(tab) {
+  document.querySelectorAll('.img-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`.img-tab[onclick*="${tab}"]`).classList.add('active');
+  document.getElementById('imageTabUrl').style.display = tab === 'url' ? '' : 'none';
+  document.getElementById('imageTabUpload').style.display = tab === 'upload' ? '' : 'none';
+}
+
+// Process uploaded file to base64
+function handleImageFile(file) {
+  if (!file || !file.type.startsWith('image/')) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Image must be under 5MB');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const dataUrl = e.target.result;
+    document.getElementById('itemImage').value = dataUrl;
+    document.getElementById('imagePreviewImg').innerHTML = `<img src="${dataUrl}" alt="preview">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Image preview + upload + drag & drop
 document.addEventListener('DOMContentLoaded', () => {
   const imgInput = document.getElementById('itemImage');
   if (imgInput) {
     imgInput.addEventListener('input', (e) => {
       const preview = document.getElementById('imagePreviewImg');
       const url = e.target.value.trim();
-      if (url) {
+      if (url && !url.startsWith('data:')) {
         preview.innerHTML = `<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span class=\\'placeholder\\'>Invalid URL</span>'">`;
-      } else {
+      } else if (!url) {
         preview.innerHTML = '<span class="placeholder">Preview</span>';
       }
+    });
+  }
+
+  const fileInput = document.getElementById('itemImageFile');
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      handleImageFile(e.target.files[0]);
+    });
+  }
+
+  const uploadArea = document.getElementById('uploadArea');
+  if (uploadArea) {
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('drag-over');
+    });
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('drag-over');
+    });
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('drag-over');
+      handleImageFile(e.dataTransfer.files[0]);
     });
   }
 });
